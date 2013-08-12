@@ -16,6 +16,7 @@
 
 package org.vaadin.chronographer.demo;
 
+import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.UI;
@@ -25,6 +26,7 @@ import com.vaadin.ui.VerticalLayout;
  * Cronograma demo UI
  */
 @SuppressWarnings("serial")
+@Theme("DarkTheme")
 public class TimelineUI extends UI {
     private final VerticalLayout main = new VerticalLayout();
     private TabSheet tabsheet;

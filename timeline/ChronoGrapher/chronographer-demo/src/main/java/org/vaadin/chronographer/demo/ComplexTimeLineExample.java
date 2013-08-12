@@ -24,13 +24,11 @@ import org.vaadin.chronographer.gwt.client.model.theme.event.EventsTheme;
 import org.vaadin.chronographer.gwt.client.model.theme.event.Instant;
 import org.vaadin.chronographer.gwt.client.model.theme.event.Label;
 
-import com.vaadin.annotations.StyleSheet;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 
-@StyleSheet("complexTimeLineDarkTheme.css")
 public class ComplexTimeLineExample extends VerticalLayout {
 	private static final long serialVersionUID = 1L;
 
