@@ -85,18 +85,18 @@ SimileAjax.DOM.getStyle = function(elmt, styleProp) {
 
 SimileAjax.DOM.getEventRelativeCoordinates = function(evt, elmt) {
     if (SimileAjax.Platform.browser.isIE) {
-      if (evt.type == "mousewheel") {
+      //if (evt.type == "mousewheel") {
         var coords = SimileAjax.DOM.getPageCoordinates(elmt);
         return {
           x: evt.clientX - coords.left, 
           y: evt.clientY - coords.top
         };        
-      } else {
+      /*} else {
         return {
           x: evt.offsetX,
           y: evt.offsetY
         };
-      }
+      }*/
     } else {
         var coords = SimileAjax.DOM.getPageCoordinates(elmt);
 
