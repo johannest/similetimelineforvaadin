@@ -107,6 +107,21 @@ public class ChronoGrapher extends AbstractComponent {
 		}
 	}
 
+	public void setLimits(Calendar timelineStart, Calendar timelineStop) {
+		if (timelineStart != null) {
+			getState().timelineStart = timelineStart.getTime();
+		} else {
+			getState().timelineStart = null;
+		}
+
+		if (timelineStop != null) {
+			getState().timelineStop = timelineStop.getTime();
+		} else {
+			getState().timelineStop = null;
+		}
+		drawChronoGrapher();
+	}
+
 	public void addBandInfo(TimelineBandInfo bandInfo) {
 		bandInfos.add(bandInfo);
 

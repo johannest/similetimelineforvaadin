@@ -22,7 +22,8 @@ public class TimelineEvent {
     private String classname;
     private String color;
     private String textColor;
-
+    private String bubbleClass;
+    
     public TimelineEvent() {
 
     }
@@ -146,4 +147,12 @@ public class TimelineEvent {
     public String getIcon() {
         return icon;
     }
+
+	public String getBubbleClass() {
+		return bubbleClass;
+	}
+
+	public void setBubbleClass(String bubbleClass) {
+		this.bubbleClass = bubbleClass;
+	}
 }
