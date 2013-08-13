@@ -136,6 +136,8 @@ public class SimpleTimelineExample extends VerticalLayout {
 				"#ff6666", "#3399ff" };
 		String[][] dates = new String[][] { { "1919", "1925" }, { "1925", "1931" }, { "1931", "1937" }, { "1937", "1940" }, { "1940", "1944" },
 				{ "1944", "1946" }, { "1946", "1956" }, { "1956", "1982" }, { "1982", "1994" }, { "1994", "2000" }, { "2000", "2012" }, { "2012", "2016" } };
+		String[] detailStyleNames = new String[] { "detailsStyle1", "detailsStyle2", null, "detailsStyle1", "detailsStyle2", null, "detailsStyle1", 
+				"detailsStyle2", null, "detailsStyle1", "detailsStyle2", null };
 
 		List<TimelineEvent> events = new ArrayList<TimelineEvent>();
 		for (int i = 0; i < names.length; i++) {
@@ -146,6 +148,7 @@ public class SimpleTimelineExample extends VerticalLayout {
 			event.setTitle(names[i]);
 			event.setId(i);
 			event.setColor(colors[i]);
+			event.setDetailsStyleName(detailStyleNames[i]);
 			events.add(event);
 		}
 		if (timeline != null) {

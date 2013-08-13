@@ -686,6 +686,15 @@ Timeline.OriginalEventPainter.prototype.showBubble = function(evt) {
 
 Timeline.OriginalEventPainter.prototype._showBubble = function(x, y, evt) {
     var div = document.createElement("div");
+    if( evt._obj.detailsStyleName != null ) {
+    	var classNames;
+    	if( div.className != null ) {
+    		classNames = div.className + ' ' + evt._obj.detailsStyleName;
+    	} else {
+    		classNames = evt._obj.detailsStyleName;
+    	}
+    	div.className = classNames;
+    }
     var themeBubble = this._params.theme.event.bubble;
     evt.fillInfoBubble(div, this._params.theme, this._band.getLabeller(), this._timeline._serverCallOnEventClickEnabled);
 

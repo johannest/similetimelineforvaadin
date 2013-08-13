@@ -50,3 +50,11 @@
 .dark-theme .timeline-ether-weekends {
     background: none repeat scroll 0 0 #111111;
 }
+
+.detailsStyle1 .timeline-event-bubble-title {
+	color: blue;
+}
+
+.detailsStyle2 .timeline-event-bubble-title {
+	color: red;
+}
