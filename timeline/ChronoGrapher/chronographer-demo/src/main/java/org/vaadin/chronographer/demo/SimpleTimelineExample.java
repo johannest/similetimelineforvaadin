@@ -13,9 +13,11 @@ import org.vaadin.chronographer.gwt.client.model.TimelineBandInfo;
 import org.vaadin.chronographer.gwt.client.model.TimelineEvent;
 import org.vaadin.chronographer.gwt.client.model.TimelineZone;
 
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Button.ClickEvent;
 
 public class SimpleTimelineExample extends VerticalLayout {
 
@@ -32,7 +34,6 @@ public class SimpleTimelineExample extends VerticalLayout {
 	public void attach() {
 		super.attach();
 
-		
 		if (timeline == null) {
 			try {
 				com.vaadin.ui.Label infoLabel = new com.vaadin.ui.Label("This simple example demonstrates basic usage of the ChronoGrapher widget");
@@ -43,10 +44,10 @@ public class SimpleTimelineExample extends VerticalLayout {
 				e.printStackTrace();
 			}
 		}
-		
+
 		if (timelinewithStartAndEnd == null) {
 			try {
-				com.vaadin.ui.Label infoLabel = new com.vaadin.ui.Label("Timeline with start year 1977 and end year 2050.");
+				com.vaadin.ui.Label infoLabel = new com.vaadin.ui.Label("Timeline with start year 1900 and end year 2100.");
 				infoLabel.setId("timeline-ex2-infolabel");
 				addComponent(infoLabel);
 				addComponent(getTimelineComponentWithStartAndEnd());
@@ -61,6 +62,21 @@ public class SimpleTimelineExample extends VerticalLayout {
 			e.printStackTrace();
 		}
 
+		Button button = new Button("Change range to 1950-2050", new Button.ClickListener() {
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void buttonClick(ClickEvent event) {
+				Calendar timelineStart = Calendar.getInstance();
+				timelineStart.set(Calendar.YEAR, 1950);
+				Calendar timelineStop = Calendar.getInstance();
+				timelineStop.set(Calendar.YEAR, 2050);
+				timelinewithStartAndEnd.setStartTime(timelineStart.getTime());
+				timelinewithStartAndEnd.setEndTime(timelineStop.getTime());
+			}
+		});
+		addComponent(button);
 	}
 
 	private Component getTimelineComponent() throws ParseException {
@@ -96,10 +112,10 @@ public class SimpleTimelineExample extends VerticalLayout {
 
 	private Component getTimelineComponentWithStartAndEnd() throws ParseException {
 		Calendar timelineStart = Calendar.getInstance();
-		timelineStart.set(Calendar.YEAR, 1977);
+		timelineStart.set(Calendar.YEAR, 1900);
 		Calendar timelineStop = Calendar.getInstance();
-		timelineStop.set(Calendar.YEAR, 2050);
-		timelinewithStartAndEnd = new ChronoGrapher("timeline-ex2-timelinewidget", true, timelineStart, timelineStop);
+		timelineStop.set(Calendar.YEAR, 2100);
+		timelinewithStartAndEnd = new ChronoGrapher("timeline-ex2-timelinewidget", true, timelineStart.getTime(), timelineStop.getTime());
 		timelinewithStartAndEnd.setEventClickHandler(new ChronoGrapher.EventClickHandler() {
 			@Override
 			public void handleClick(String eventId, String eventTitle) {
@@ -147,6 +163,9 @@ public class SimpleTimelineExample extends VerticalLayout {
 			event.setEnd(df.parse(dates[i][1]));
 			event.setTitle(names[i]);
 			event.setId(i);
+			if (i % 2 == 0) {
+				event.setIcon("js/api/images/dark-red-circle.png");
+			}
 			event.setColor(colors[i]);
 			event.setDetailsStyleName(detailStyleNames[i]);
 			events.add(event);

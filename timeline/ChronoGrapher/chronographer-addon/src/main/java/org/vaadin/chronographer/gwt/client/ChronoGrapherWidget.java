@@ -55,7 +55,7 @@ public class ChronoGrapherWidget extends TimeLineWidget implements ResizeHandler
 		setStyleName(CLASSNAME);
 	}
 
-	public void init(String w, String h, boolean horizontal, boolean serverCallOnEventClickEnabled, Date timelineStart, Date timelineStop,
+	public void init(String w, String h, boolean horizontal, boolean serverCallOnEventClickEnabled, Date startTime, Date endTime,
 			List<TimelineBandInfo> bandInfos, List<TimelineTheme> timelineThemes, String eventsJson) {
 		if (!inited) {
 			extractPixelWidthAndHeights(w, h);
@@ -64,14 +64,14 @@ public class ChronoGrapherWidget extends TimeLineWidget implements ResizeHandler
 			setHorizontalOrientation(horizontal);
 			setServerCallOnEventClickEnabled(serverCallOnEventClickEnabled);
 
+			if (startTime != null) {
+				setStartTime(startTime);
+			}
+			if (endTime != null) {
+				setEndTime(endTime);
+			}
+			
 			Theme theme = Theme.create();
-			if (timelineStart != null) {
-				theme.setTimelineStart(timelineStart);
-			}
-			if (timelineStop != null) {
-				theme.setTimelineStop(timelineStop);
-
-			}
 			setStructure(bandInfos, theme);
 			setThemes(timelineThemes);
 
