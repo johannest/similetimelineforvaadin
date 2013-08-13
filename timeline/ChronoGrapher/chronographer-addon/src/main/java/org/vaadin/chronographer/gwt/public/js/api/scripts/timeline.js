@@ -48,7 +48,7 @@ Timeline.getDefaultLocale = function() {
     return Timeline.clientLocale;
 };
 
-Timeline.create = function(elmt, bandInfos, orientation, unit, serverCallOnEventClickEnabled) {
+Timeline.create = function(elmt, bandInfos, orientation, unit, serverCallOnEventClickEnabled, startTime, endTime) {
     if (Timeline.timelines == null) {
         Timeline.timelines = [];
         // Timeline.timelines array can have null members--Timelines that
@@ -58,7 +58,7 @@ Timeline.create = function(elmt, bandInfos, orientation, unit, serverCallOnEvent
     var timelineID = Timeline.timelines.length;
     Timeline.timelines[timelineID] = null; // placeholder until we have the object
     var new_tl = new Timeline._Impl(elmt, bandInfos, orientation, unit, serverCallOnEventClickEnabled,
-      timelineID);
+      timelineID, startTime, endTime);
     Timeline.timelines[timelineID] = new_tl;    
     return new_tl;
 };
@@ -247,7 +247,7 @@ Timeline.writeVersion = function(el_id) {
  *  Timeline Implementation object
  *==================================================
  */
-Timeline._Impl = function(elmt, bandInfos, orientation, unit, serverCallOnEventClickEnabled, timelineID) {
+Timeline._Impl = function(elmt, bandInfos, orientation, unit, serverCallOnEventClickEnabled, timelineID, startTime, endTime) {
     SimileAjax.WindowManager.initialize();
     
     this._containerDiv = elmt;
@@ -266,10 +266,8 @@ Timeline._Impl = function(elmt, bandInfos, orientation, unit, serverCallOnEventC
     this.autoWidthAnimationTime = bandInfos && bandInfos[0] && bandInfos[0].theme && 
                      bandInfos[0].theme.autoWidthAnimationTime;
     this.timelineID = timelineID; // also public attribute
-    this.timeline_start = bandInfos && bandInfos[0] && bandInfos[0].theme && 
-                     bandInfos[0].theme.timeline_start;
-    this.timeline_stop  = bandInfos && bandInfos[0] && bandInfos[0].theme && 
-                     bandInfos[0].theme.timeline_stop;
+    this.timeline_start = startTime && startTime.jsdate;
+    this.timeline_end = endTime && endTime.jsdate;
     this.timeline_at_start = false; // already at start or stop? Then won't 
     this.timeline_at_stop = false;  // try to move further in the wrong direction
     
@@ -341,6 +339,22 @@ Timeline._Impl.prototype.isVertical = function() {
 
 Timeline._Impl.prototype.isServerCallOnEventClickEnabled = function() {
     return this._serverCallOnEventClickEnabled;
+};
+
+Timeline._Impl.prototype.setStartTime = function(startTime) {
+	this.timeline_start = startTime.jsdate;
+	var band = this.getBand(0);
+	if( band.getMinVisibleDate() < this.timeline_start ) {
+		band.setMinVisibleDate(this.timeline_start);
+	}
+};
+
+Timeline._Impl.prototype.setEndTime = function(endTime) {
+	this.timeline_end = endTime.jsdate;
+	var band = this.getBand(0);
+	if( band.getMaxVisibleDate() > this.timeline_end ) {
+		band.setMaxVisibleDate(this.timeline_end);
+	}
 };
 
 Timeline._Impl.prototype.getPixelLength = function() {
@@ -578,7 +592,7 @@ Timeline._Impl.prototype.shiftOK = function(index, shift) {
     
     // Is there an edge?
     if ((going_back    && this.timeline_start == null) ||
-        (going_forward && this.timeline_stop  == null) ||
+        (going_forward && this.timeline_end  == null) ||
         (shift == 0)) {
         return (true);  // early return
     }
@@ -612,7 +626,7 @@ Timeline._Impl.prototype.shiftOK = function(index, shift) {
                 >= this.timeline_start;
        } else {
            ok = (i == index ? band.getMaxVisibleDateAfterDelta(shift) : band.getMaxVisibleDate())
-                <= this.timeline_stop;
+                <= this.timeline_end;
        }	
     }
     

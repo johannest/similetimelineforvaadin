@@ -20,7 +20,7 @@ public class ChronoGrapherState extends AbstractComponentState {
 	public List<TimelineTheme> timelineThemes;
 
 	public Date timelineStart;
-	public Date timelineStop;
+	public Date timelineEnd;
 
 	public String eventsJson;
 

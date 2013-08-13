@@ -104,21 +104,4 @@ public class Theme extends JavaScriptObject {
 		ThemeImpl.setFirstDayOfWeek(this, firstDayOfWeek);
 	}
 
-	public final void setTimelineStart(Date timelineStart) {
-		String[] strFields = DateTimeFormat.getFormat("yyyy:MM:dd:HH:mm:ss:SSS").format(timelineStart).split(":");
-		int[] fields = new int[strFields.length];
-		for (int i = 0; i < fields.length; i++) {
-			fields[i] = Integer.parseInt(strFields[i]);
-		}
-		ThemeImpl.setTimelineStart(this, fields[0], fields[1], fields[2], fields[3], fields[4], fields[5], fields[6]);
-	}
-
-	public final void setTimelineStop(Date timelineStop) {
-		String[] strFields = DateTimeFormat.getFormat("yyyy:MM:dd:HH:mm:ss:SSS").format(timelineStop).split(":");
-		int[] fields = new int[strFields.length];
-		for (int i = 0; i < fields.length; i++) {
-			fields[i] = Integer.parseInt(strFields[i]);
-		}
-		ThemeImpl.setTimelineStop(this, fields[0], fields[1], fields[2], fields[3], fields[4], fields[5], fields[6]);
-	}
 }

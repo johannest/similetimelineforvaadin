@@ -20,6 +20,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -56,22 +57,22 @@ public class ChronoGrapher extends AbstractComponent {
 	private EventClickHandler eventClickHandler;
 
 	public ChronoGrapher() {
-		this(null, false, null, null);
+		this(null, false);
+	}
+	
+	public ChronoGrapher(Date startTime, Date endTime) {
+		this(null, false, startTime, endTime);
 	}
 
-	public ChronoGrapher(String uniqueComponentId, boolean serverCallOnEventClickedEnabled) {
-		this(uniqueComponentId, serverCallOnEventClickedEnabled, null, null);
+	public ChronoGrapher(String uniqueComponentId, boolean serverCallOnEventClickEnabled) {
+		this(uniqueComponentId, serverCallOnEventClickEnabled, null, null);
 	}
 
-	public ChronoGrapher(String uniqueComponentId, boolean serverCallOnEventClickEnabled, Calendar timelineStart, Calendar timelineStop) {
+	public ChronoGrapher(String uniqueComponentId, boolean serverCallOnEventClickEnabled, Date startTime, Date endTime) {
 		super();
 		bandInfos = new ArrayList<TimelineBandInfo>();
 		timelineThemes = new ArrayList<TimelineTheme>();
 		timelineEvents = new Events();
-		init(uniqueComponentId, serverCallOnEventClickEnabled, timelineStart, timelineStop);
-	}
-
-	private void init(String uniqueComponentId, boolean serverCallOnEventClickEnabled, Calendar timelineStart, Calendar timelineStop) {
 
 		registerRpc(new ChronoGrapherServerRpc() {
 			@Override
@@ -99,25 +100,28 @@ public class ChronoGrapher extends AbstractComponent {
 		if (uniqueComponentId != null && !uniqueComponentId.isEmpty()) {
 			setId(uniqueComponentId);
 		}
-		if (timelineStart != null) {
-			getState().timelineStart = timelineStart.getTime();
+		if (startTime != null) {
+			getState().timelineStart = startTime;
 		}
-		if (timelineStop != null) {
-			getState().timelineStop = timelineStop.getTime();
+		if (endTime != null) {
+			getState().timelineEnd = endTime;
 		}
 	}
 
-	public void setLimits(Calendar timelineStart, Calendar timelineStop) {
-		if (timelineStart != null) {
-			getState().timelineStart = timelineStart.getTime();
+	public void setStartTime(Date startTime) {
+		if (startTime != null) {
+			getState().timelineStart = startTime;
 		} else {
 			getState().timelineStart = null;
 		}
-
-		if (timelineStop != null) {
-			getState().timelineStop = timelineStop.getTime();
+		drawChronoGrapher();
+	}
+	
+	public void setEndTime(Date endTime) {
+		if (endTime != null) {
+			getState().timelineEnd = endTime;
 		} else {
-			getState().timelineStop = null;
+			getState().timelineEnd = null;
 		}
 		drawChronoGrapher();
 	}

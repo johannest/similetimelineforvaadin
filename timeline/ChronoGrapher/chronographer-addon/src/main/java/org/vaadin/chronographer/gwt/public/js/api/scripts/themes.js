@@ -37,10 +37,6 @@ Timeline.ClassicTheme._Impl = function() {
                             // needed when too many events for the available width
                             // are painted on the visible part of the Timeline?
     this.autoWidthAnimationTime = 500; // mSec
-    this.timeline_start = null; // Setting a date, eg new Date(Date.UTC(2008,0,17,20,00,00,0)) will prevent the
-                                // Timeline from being moved to anytime before the date.
-    this.timeline_stop = null;  // Use for setting a maximum date. The Timeline will not be able 
-                                // to be moved to anytime after this date.
     this.ether = {
         backgroundColors: [
         //    "#EEE",

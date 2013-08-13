@@ -16,6 +16,7 @@
 package org.vaadin.chronographer.gwt.client.netthreads;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -42,6 +43,8 @@ public class TimeLineWidget extends Widget {
     private Element divElement = null;
     private boolean horizontalOrientation = true;
     private boolean serverCallOnEventClickEnabled = false;
+    private Date startTime = null;
+    private Date endTime = null;
 
     /**
      * Create timeline elements and assign renderer. The renderer must implement
@@ -109,9 +112,8 @@ public class TimeLineWidget extends Widget {
      * 
      */
     public void create() {
-    	System.out.println("init");
         timeLine = TimeLine.create(bandInfos, eventSource, divElement,
-                getClientElement(), horizontalOrientation, serverCallOnEventClickEnabled);
+                getClientElement(), horizontalOrientation, serverCallOnEventClickEnabled, startTime, endTime);
     }
 
     /**
@@ -319,4 +321,26 @@ public class TimeLineWidget extends Widget {
 	public void setEventSource(EventSource eventSource) {
         this.eventSource = eventSource;
     }
+
+	public Date getStartTime() {
+		return startTime;
+	}
+	
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+		if (timeLine != null) {
+			timeLine.setStartTime(startTime);
+		}
+	}
+	
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+		if (timeLine != null) {
+			timeLine.setEndTime(endTime);
+		}
+	}
 }

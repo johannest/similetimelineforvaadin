@@ -47,7 +47,7 @@ public class SimpleTimelineExample extends VerticalLayout {
 
 		if (timelinewithStartAndEnd == null) {
 			try {
-				com.vaadin.ui.Label infoLabel = new com.vaadin.ui.Label("Timeline with start year 1977 and end year 2050.");
+				com.vaadin.ui.Label infoLabel = new com.vaadin.ui.Label("Timeline with start year 1900 and end year 2100.");
 				infoLabel.setId("timeline-ex2-infolabel");
 				addComponent(infoLabel);
 				addComponent(getTimelineComponentWithStartAndEnd());
@@ -62,7 +62,7 @@ public class SimpleTimelineExample extends VerticalLayout {
 			e.printStackTrace();
 		}
 
-		Button button = new Button("Change range to 1950-2100", new Button.ClickListener() {
+		Button button = new Button("Change range to 1950-2050", new Button.ClickListener() {
 
 			private static final long serialVersionUID = 1L;
 
@@ -71,9 +71,9 @@ public class SimpleTimelineExample extends VerticalLayout {
 				Calendar timelineStart = Calendar.getInstance();
 				timelineStart.set(Calendar.YEAR, 1950);
 				Calendar timelineStop = Calendar.getInstance();
-				timelineStop.set(Calendar.YEAR, 2100);
-				timelinewithStartAndEnd.setLimits(timelineStart, timelineStop);
-				timelinewithStartAndEnd.clearEvents();
+				timelineStop.set(Calendar.YEAR, 2050);
+				timelinewithStartAndEnd.setStartTime(timelineStart.getTime());
+				timelinewithStartAndEnd.setEndTime(timelineStop.getTime());
 			}
 		});
 		addComponent(button);
@@ -112,10 +112,10 @@ public class SimpleTimelineExample extends VerticalLayout {
 
 	private Component getTimelineComponentWithStartAndEnd() throws ParseException {
 		Calendar timelineStart = Calendar.getInstance();
-		timelineStart.set(Calendar.YEAR, 1977);
+		timelineStart.set(Calendar.YEAR, 1900);
 		Calendar timelineStop = Calendar.getInstance();
-		timelineStop.set(Calendar.YEAR, 2050);
-		timelinewithStartAndEnd = new ChronoGrapher("timeline-ex2-timelinewidget", true, timelineStart, timelineStop);
+		timelineStop.set(Calendar.YEAR, 2100);
+		timelinewithStartAndEnd = new ChronoGrapher("timeline-ex2-timelinewidget", true, timelineStart.getTime(), timelineStop.getTime());
 		timelinewithStartAndEnd.setEventClickHandler(new ChronoGrapher.EventClickHandler() {
 			@Override
 			public void handleClick(String eventId, String eventTitle) {
@@ -167,7 +167,6 @@ public class SimpleTimelineExample extends VerticalLayout {
 			event.setColor(colors[i]);
 			event.setClassname(i % 2 == 0 ? "PARNO" : "NEPARNO");
 			event.setBubbleClass("TOPLICA");
-			event.setImage("adgdgd");
 			events.add(event);
 		}
 		if (timeline != null) {

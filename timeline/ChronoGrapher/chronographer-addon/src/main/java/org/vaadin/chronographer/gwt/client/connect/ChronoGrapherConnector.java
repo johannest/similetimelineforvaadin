@@ -42,6 +42,12 @@ public class ChronoGrapherConnector extends AbstractComponentConnector {
 			if (stateChangeEvent.hasPropertyChanged("timelineThemes")) {
 				getWidget().setThemes(getState().timelineThemes);
 			}
+			if (stateChangeEvent.hasPropertyChanged("timelineStart")) {
+				getWidget().setStartTime(getState().timelineStart);
+			}
+			if (stateChangeEvent.hasPropertyChanged("timelineEnd")) {
+				getWidget().setEndTime(getState().timelineEnd);
+			}
 		}
 
 		if (!getState().initialized) {
@@ -49,7 +55,7 @@ public class ChronoGrapherConnector extends AbstractComponentConnector {
 				@Override
 				public boolean execute() {
 					getWidget().init(getState().width, getState().height, getState().horizontal, getState().serverCallOnEventClickEnabled,
-							getState().timelineStart, getState().timelineStop, getState().bandInfos, getState().timelineThemes, getState().eventsJson);
+							getState().timelineStart, getState().timelineEnd, getState().bandInfos, getState().timelineThemes, getState().eventsJson);
 					getState().initialized = true;
 					return false;
 				}

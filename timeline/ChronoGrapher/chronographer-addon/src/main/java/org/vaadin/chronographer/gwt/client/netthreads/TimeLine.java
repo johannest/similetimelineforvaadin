@@ -20,6 +20,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.UIObject;
 
+import java.util.Date;
 import java.util.List;
 
 import org.vaadin.chronographer.gwt.client.TimeLineClickHandler;
@@ -40,7 +41,7 @@ public class TimeLine extends JavaScriptObject
     /**
      * Create TimeLine object
      */
-    public static TimeLine create(List bands, EventSource source, Element divElement, Element clientElement, boolean horizontalOrientation, boolean serverCallOnEventClickEnabled)
+    public static TimeLine create(List bands, EventSource source, Element divElement, Element clientElement, boolean horizontalOrientation, boolean serverCallOnEventClickEnabled, Date startTime, Date endTime)
     {
     	JavaScriptObject[] bandArr = JavaScriptObjectHelper.listToArray(bands);
 
@@ -49,7 +50,7 @@ public class TimeLine extends JavaScriptObject
         boolean currVisible = UIObject.isVisible(clientElement);
         UIObject.setVisible(clientElement, true);
         
-        TimeLine timeLine = TimeLineImpl.create(jarr, divElement, horizontalOrientation ? 0 : 1, serverCallOnEventClickEnabled);
+        TimeLine timeLine = TimeLineImpl.create(jarr, divElement, horizontalOrientation ? 0 : 1, serverCallOnEventClickEnabled, startTime, endTime);
 
         UIObject.setVisible(clientElement, currVisible);
         
@@ -106,5 +107,23 @@ public class TimeLine extends JavaScriptObject
      */
     public final void centerOnEvent(){
     	
+    }
+    
+    /**
+     * Sets start of timeline range
+     * 
+     * @param startTime
+     */
+    public final void setStartTime(Date startTime){
+    	TimeLineImpl.setStartTime(startTime, this);
+    }
+    
+    /**
+     * Sets end of timeline range
+     * 
+     * @param endTime
+     */
+    public final void setEndTime(Date endTime){
+    	TimeLineImpl.setEndTime(endTime, this);
     }
 }

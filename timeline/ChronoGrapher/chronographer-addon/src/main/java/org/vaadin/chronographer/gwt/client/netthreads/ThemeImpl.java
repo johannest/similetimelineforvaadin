@@ -110,16 +110,5 @@ class ThemeImpl {
                                                                                  theme.firstDayOfWeek = firstDayOfWeek;
                                                                                  }-*/;
 
-    public native static void setTimelineStart(Theme theme, int year, int month, int day, int hour, int minute, int second, int millisecond) 
-    /*-{
-            debugger;
-    		theme.timeline_start = new Date(Date.UTC(year, month, day, hour, minute, second, millisecond));
-       }-*/;
-    
-    public native static void setTimelineStop(Theme theme, int year, int month, int day, int hour, int minute, int second, int millisecond) 
-    /*-{
-    		debugger;
-    		theme.timeline_stop = new Date(Date.UTC(year, month, day, hour, minute, second, millisecond));
-       }-*/;
 }
 
