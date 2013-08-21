@@ -49,8 +49,9 @@ public class TimeLine extends JavaScriptObject
 
         boolean currVisible = UIObject.isVisible(clientElement);
         UIObject.setVisible(clientElement, true);
-        
-        TimeLine timeLine = TimeLineImpl.create(jarr, divElement, horizontalOrientation ? 0 : 1, serverCallOnEventClickEnabled, startTime, endTime);
+		double startTimeL = startTime == null ? 0 : startTime.getTime();
+		double endTimeL = endTime == null ? 0 : endTime.getTime();
+		TimeLine timeLine = TimeLineImpl.create(jarr, divElement, horizontalOrientation ? 0 : 1, serverCallOnEventClickEnabled, startTimeL, endTimeL);
 
         UIObject.setVisible(clientElement, currVisible);
         
@@ -115,7 +116,7 @@ public class TimeLine extends JavaScriptObject
      * @param startTime
      */
     public final void setStartTime(Date startTime){
-    	TimeLineImpl.setStartTime(startTime, this);
+    	TimeLineImpl.setStartTime(this, startTime.getTime());
     }
     
     /**
@@ -124,6 +125,6 @@ public class TimeLine extends JavaScriptObject
      * @param endTime
      */
     public final void setEndTime(Date endTime){
-    	TimeLineImpl.setEndTime(endTime, this);
+    	TimeLineImpl.setEndTime(this, endTime.getTime());
     }
 }

@@ -249,6 +249,12 @@ Timeline.writeVersion = function(el_id) {
  */
 Timeline._Impl = function(elmt, bandInfos, orientation, unit, serverCallOnEventClickEnabled, timelineID, startTime, endTime) {
     SimileAjax.WindowManager.initialize();
+    if( startTime == 0 ) {
+    	startTime = null;
+    }
+    if( endTime == 0 ) {
+    	endTime = null;
+    }
     
     this._containerDiv = elmt;
     
@@ -266,8 +272,8 @@ Timeline._Impl = function(elmt, bandInfos, orientation, unit, serverCallOnEventC
     this.autoWidthAnimationTime = bandInfos && bandInfos[0] && bandInfos[0].theme && 
                      bandInfos[0].theme.autoWidthAnimationTime;
     this.timelineID = timelineID; // also public attribute
-    this.timeline_start = startTime && startTime.jsdate;
-    this.timeline_end = endTime && endTime.jsdate;
+    this.timeline_start = startTime && new Date(startTime);
+    this.timeline_end = endTime && new Date(endTime);
     this.timeline_at_start = false; // already at start or stop? Then won't 
     this.timeline_at_stop = false;  // try to move further in the wrong direction
     
@@ -342,18 +348,22 @@ Timeline._Impl.prototype.isServerCallOnEventClickEnabled = function() {
 };
 
 Timeline._Impl.prototype.setStartTime = function(startTime) {
-	this.timeline_start = startTime.jsdate;
-	var band = this.getBand(0);
-	if( band.getMinVisibleDate() < this.timeline_start ) {
-		band.setMinVisibleDate(this.timeline_start);
+	if ( startTime && startTime != 0 ) {
+		this.timeline_start = new Date(startTime);
+		var band = this.getBand(0);
+		if( band.getMinVisibleDate() < this.timeline_start ) {
+			band.setMinVisibleDate(this.timeline_start);
+		}
 	}
 };
 
 Timeline._Impl.prototype.setEndTime = function(endTime) {
-	this.timeline_end = endTime.jsdate;
-	var band = this.getBand(0);
-	if( band.getMaxVisibleDate() > this.timeline_end ) {
-		band.setMaxVisibleDate(this.timeline_end);
+	if ( endTime && endTime != 0 ) {
+		this.timeline_end = new Date(endTime);
+		var band = this.getBand(0);
+		if( band.getMaxVisibleDate() > this.timeline_end ) {
+			band.setMaxVisibleDate(this.timeline_end);
+		}
 	}
 };
 

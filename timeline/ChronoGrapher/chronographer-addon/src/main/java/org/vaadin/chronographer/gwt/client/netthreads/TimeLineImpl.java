@@ -37,7 +37,7 @@ class TimeLineImpl {
     private static TimeLineClickHandler listener;
 
     public native static TimeLine create(JavaScriptObject bands,
-            Element divElement, int orientation, boolean serverCallOnEventClickEnabled, Date startTime, Date endTime) /*-{
+            Element divElement, int orientation, boolean serverCallOnEventClickEnabled, double startTime, double endTime) /*-{
                                                  return $wnd.Timeline.create(divElement, bands, orientation, null, serverCallOnEventClickEnabled, startTime, endTime)
                                                  }-*/;
 
@@ -84,12 +84,14 @@ class TimeLineImpl {
                                                 }finally {}
                                                 }-*/;
     
-    public native static void setStartTime(Date startTime, TimeLine timeLine) /*-{
-	    timeLine.setStartTime(startTime);
-	    }-*/;
-	
-	public native static void setEndTime(Date endTime, TimeLine timeLine) /*-{
-	    timeLine.setEndTime(endTime);
-	    }-*/;
-
+    public native static void setStartTime(TimeLine timeLine, double startTime)
+    /*-{
+		timeLine.setStartTime(startTime);
+	}-*/;
+    
+    public native static void setEndTime(TimeLine timeLine, double endTime)
+    /*-{
+		timeLine.setEndTime(endTime);
+	}-*/;
+    
 }
