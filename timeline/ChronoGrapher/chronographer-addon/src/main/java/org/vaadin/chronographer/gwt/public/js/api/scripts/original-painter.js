@@ -637,7 +637,7 @@ Timeline.OriginalEventPainter.prototype._createHighlightDiv = function(highlight
     return div;
 };
 
-Timeline.OriginalEventPainter.prototype._highlightSelectedEvent = function(dimensions, evt) {
+Timeline.OriginalEventPainter.prototype._highlightSelectedEvent = function(iconId, evt) {
     var doc = this._timeline.getDocument();        
     var color = evt.getHighlightColor();
     
@@ -645,12 +645,13 @@ Timeline.OriginalEventPainter.prototype._highlightSelectedEvent = function(dimen
     div.className = this._getElClassName('timeline-event-highlight', evt, 'highlight');
     div.id = this._encodeEventElID('highlight0', evt); // in future will have other
                                                        // highlight divs for tapes + icons
+    var $icon = $(doc.getElementById(iconId));
     div.style.position = "absolute";
     div.style.overflow = "hidden";
-    div.style.left =    (dimensions.left - 2) + "px";
-    div.style.width =   (dimensions.width + 4) + "px";
-    div.style.top =     (dimensions.top - 2) + "px";
-    div.style.height =  (dimensions.height + 4) + "px";
+    div.style.left =    ($icon.position().left - 2) + "px";
+    div.style.width =   ($icon.width() + 4) + "px";
+    div.style.top =     ($icon.position().top - 2) + "px";
+    div.style.height =  ($icon.height() + 4) + "px";
     div.style.background = color;
     
     this._highlightLayer.appendChild(div);
@@ -672,23 +673,15 @@ Timeline.OriginalEventPainter.prototype._onMouseOverInstantEvent = function(icon
 };
 
 Timeline.OriginalEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {
-	var $icon = $(icon);
 	// clear previous highlights
+	var $icon = $(icon);
 	$icon.parent().parent().parent().find('div.timeline-band-highlights').find('div.timeline-event-highlight').remove();
-	
-	var position = $icon.position();
-	var dimensions = {
-        left:   position.left,
-        top:    position.top,
-        width:  $icon.width(),
-        height: $icon.height(),
-        elmt:   icon
-    };
-	this._highlightSelectedEvent(dimensions, evt);
-	
 	// center selected event
+	var painter = this;
 	var band = this._timeline.getBand(0);
-	band.scrollToCenter(evt.getStart(), function() {});
+	band.scrollToCenter(evt.getStart(), function() {
+		painter._highlightSelectedEvent(icon.id, evt);
+	});
 	// server call
 	var myFunc = window[this._timeline._containerDiv.id];
 	myFunc.onEventClick(evt.getID(), evt.getText());
