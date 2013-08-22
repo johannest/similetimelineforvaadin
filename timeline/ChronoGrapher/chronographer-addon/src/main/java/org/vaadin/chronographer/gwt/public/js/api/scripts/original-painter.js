@@ -652,8 +652,12 @@ Timeline.OriginalEventPainter.prototype._onMouseOverInstantEvent = function(icon
 };
 
 Timeline.OriginalEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {
+	// center selected event
+	var band = this._timeline.getBand(0);
+	band.scrollToCenter(evt.getStart(), function() {});
+	// server call
 	var myFunc = window[this._timeline._containerDiv.id];
-	myFunc.onEventClick(evt._obj.id,evt._obj.title);
+	myFunc.onEventClick(evt.getID(), evt.getText());
 
     SimileAjax.DOM.cancelEvent(domEvt);
     return false;
