@@ -60,6 +60,7 @@ Timeline.DefaultEventSource.prototype.loadXML = function(xml, url) {
                         link: this._resolveRelativeURL(node.getAttribute("link") , base),
                         icon: this._resolveRelativeURL(node.getAttribute("icon") , base),
                        color: node.getAttribute("color"),
+              highlightColor: node.getAttribute("highlightColor"),
                    textColor: node.getAttribute("textColor"),
                    hoverText: node.getAttribute("hoverText"),
                    classname: node.getAttribute("classname"),
@@ -118,6 +119,7 @@ Timeline.DefaultEventSource.prototype.loadJSON = function(data, url) {
                         link: this._resolveRelativeURL(event.link , base),
                         icon: this._resolveRelativeURL(event.icon , base),
                        color: event.color,                                      
+              highlightColor: event.highlightColor,
                    textColor: event.textColor,
                    hoverText: event.hoverText,
                    classname: event.classname,
@@ -212,6 +214,7 @@ Timeline.DefaultEventSource.prototype.loadSPARQL = function(xml, url) {
                         link: this._resolveRelativeURL(bindings["link"] , base),
                         icon: this._resolveRelativeURL(bindings["icon"] , base),
                        color: bindings["color"],                                
+              highlightColor: bindings["highlightColor"],
                    textColor: bindings["textColor"],
                    hoverText: bindings["hoverText"],
                      caption: bindings["caption"],
@@ -350,6 +353,7 @@ Timeline.DefaultEventSource.Event = function(args) {
   //   link         -- used in bubbles
   //   icon         -- on the Timeline
   //   color        -- Timeline label and tape color
+  //   highlightColor -- Timeline icon highlight color
   //   textColor    -- Timeline label color, overrides color attribute
   //   hoverText    -- deprecated, here for backwards compatibility.
   //                   Superceeded by caption
@@ -410,6 +414,7 @@ Timeline.DefaultEventSource.Event = function(args) {
   
   this._icon = cleanArg('icon');
   this._color = cleanArg('color');      
+  this._highlightColor = cleanArg('highlightColor');
   this._textColor = cleanArg('textColor');
   this._classname = cleanArg('classname');
   this._tapeImage = cleanArg('tapeImage');
@@ -442,6 +447,7 @@ Timeline.DefaultEventSource.Event.prototype = {
     
     getIcon:        function() { return this._icon; },
     getColor:       function() { return this._color; },
+    getHighlightColor: function() { return this._highlightColor; },
     getTextColor:   function() { return this._textColor; },
     getClassName:   function() { return this._classname; },
     getTapeImage:   function() { return this._tapeImage; },

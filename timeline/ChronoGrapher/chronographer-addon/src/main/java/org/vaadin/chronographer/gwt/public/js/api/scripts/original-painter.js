@@ -637,6 +637,26 @@ Timeline.OriginalEventPainter.prototype._createHighlightDiv = function(highlight
     return div;
 };
 
+Timeline.OriginalEventPainter.prototype._highlightSelectedEvent = function(dimensions, evt) {
+    var doc = this._timeline.getDocument();        
+    var color = evt.getHighlightColor();
+    
+    var div = doc.createElement("div");
+    div.className = this._getElClassName('timeline-event-highlight', evt, 'highlight');
+    div.id = this._encodeEventElID('highlight0', evt); // in future will have other
+                                                       // highlight divs for tapes + icons
+    div.style.position = "absolute";
+    div.style.overflow = "hidden";
+    div.style.left =    (dimensions.left - 2) + "px";
+    div.style.width =   (dimensions.width + 4) + "px";
+    div.style.top =     (dimensions.top - 2) + "px";
+    div.style.height =  (dimensions.height + 4) + "px";
+    div.style.background = color;
+    
+    this._highlightLayer.appendChild(div);
+    return div;
+};
+
 Timeline.OriginalEventPainter.prototype._onMouseOverInstantEvent = function(icon, domEvt, evt) {
     var c = SimileAjax.DOM.getPageCoordinates(icon);
     this._showBubble(
@@ -652,6 +672,20 @@ Timeline.OriginalEventPainter.prototype._onMouseOverInstantEvent = function(icon
 };
 
 Timeline.OriginalEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {
+	var $icon = $(icon);
+	// clear previous highlights
+	$icon.parent().parent().parent().find('div.timeline-band-highlights').find('div.timeline-event-highlight').remove();
+	
+	var position = $icon.position();
+	var dimensions = {
+        left:   position.left,
+        top:    position.top,
+        width:  $icon.width(),
+        height: $icon.height(),
+        elmt:   icon
+    };
+	this._highlightSelectedEvent(dimensions, evt);
+	
 	// center selected event
 	var band = this._timeline.getBand(0);
 	band.scrollToCenter(evt.getStart(), function() {});

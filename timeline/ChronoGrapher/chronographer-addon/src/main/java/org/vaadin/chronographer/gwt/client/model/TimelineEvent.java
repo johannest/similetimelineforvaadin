@@ -21,6 +21,7 @@ public class TimelineEvent {
     private String caption;
     private String classname;
     private String color;
+    private String highlightColor;
     private String textColor;
     private String detailsStyleName;
 
@@ -131,8 +132,16 @@ public class TimelineEvent {
     public void setColor(String color) {
         this.color = color;
     }
+    
+    public String getHighlightColor() {
+		return highlightColor;
+	}
 
-    public String getTextColor() {
+	public void setHighlightColor(String highlightColor) {
+		this.highlightColor = highlightColor;
+	}
+
+	public String getTextColor() {
         return textColor;
     }
 

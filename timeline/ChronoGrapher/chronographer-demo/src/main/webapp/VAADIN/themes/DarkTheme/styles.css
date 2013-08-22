@@ -58,3 +58,7 @@
 .detailsStyle2 .timeline-event-bubble-title {
 	color: red;
 }
+
+.timeline-event-highlight {
+	background-color: blue;	
+}
