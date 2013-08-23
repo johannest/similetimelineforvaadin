@@ -15,6 +15,7 @@ import org.vaadin.chronographer.gwt.client.model.TimelineZone;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
@@ -30,6 +31,7 @@ public class SimpleTimelineExample extends VerticalLayout {
 		setId("timeline-ex1-verticallayout");
 	}
 
+	@SuppressWarnings("serial")
 	@Override
 	public void attach() {
 		super.attach();
@@ -62,10 +64,10 @@ public class SimpleTimelineExample extends VerticalLayout {
 			e.printStackTrace();
 		}
 
-		Button button = new Button("Change range to 1950-2050", new Button.ClickListener() {
+		HorizontalLayout buttons = new HorizontalLayout();
+		addComponent(buttons);
 
-			private static final long serialVersionUID = 1L;
-
+		buttons.addComponent(new Button("Change range to 1950-2050", new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				Calendar timelineStart = Calendar.getInstance();
@@ -75,8 +77,13 @@ public class SimpleTimelineExample extends VerticalLayout {
 				timelinewithStartAndEnd.setStartTime(timelineStart.getTime());
 				timelinewithStartAndEnd.setEndTime(timelineStop.getTime());
 			}
-		});
-		addComponent(button);
+		}));
+		buttons.addComponent(new Button("Select event with id 10", new Button.ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				timelinewithStartAndEnd.setSelectedEvent("10");
+			}
+		}));
 	}
 
 	private Component getTimelineComponent() throws ParseException {

@@ -127,4 +127,13 @@ public class TimeLine extends JavaScriptObject
     public final void setEndTime(Date endTime){
     	TimeLineImpl.setEndTime(this, endTime.getTime());
     }
+    
+    /**
+     * Select event with given id on timeline. Event will be highlighted and centered. 
+     * 
+     * @param eventId
+     */
+    public final void setSelectedEvent(String eventId){
+    	TimeLineImpl.setSelectedEvent(this, eventId);
+    }
 }

@@ -343,4 +343,10 @@ public class TimeLineWidget extends Widget {
 			timeLine.setEndTime(endTime);
 		}
 	}
+	
+	public void setSelectedEvent(String eventId) {
+		if (timeLine != null) {
+			timeLine.setSelectedEvent(eventId);
+		}
+	}
 }

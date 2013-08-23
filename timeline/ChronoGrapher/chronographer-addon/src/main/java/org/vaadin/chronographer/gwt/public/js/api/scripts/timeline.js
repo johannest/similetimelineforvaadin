@@ -367,6 +367,10 @@ Timeline._Impl.prototype.setEndTime = function(endTime) {
 	}
 };
 
+Timeline._Impl.prototype.setSelectedEvent = function(eventId) {
+	this.getBand(0).getEventPainter().setSelectedEvent(eventId);
+}
+
 Timeline._Impl.prototype.getPixelLength = function() {
     return this._orientation == Timeline.HORIZONTAL ? 
         this._containerDiv.offsetWidth : this._containerDiv.offsetHeight;

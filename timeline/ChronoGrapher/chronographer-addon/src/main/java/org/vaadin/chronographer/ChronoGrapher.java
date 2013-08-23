@@ -91,6 +91,7 @@ public class ChronoGrapher extends AbstractComponent {
 			com.vaadin.ui.JavaScript.getCurrent().addFunction(uniqueJSFuncName, new JavaScriptFunction() {
 				@Override
 				public void call(JSONArray arguments) throws JSONException {
+					getState().selectedEventId = null;
 					if (eventClickHandler != null) {
 						eventClickHandler.handleClick(arguments.getString(0), arguments.getString(1));
 					}
@@ -123,6 +124,11 @@ public class ChronoGrapher extends AbstractComponent {
 		} else {
 			getState().timelineEnd = null;
 		}
+		drawChronoGrapher();
+	}
+	
+	public void setSelectedEvent(String eventId) {
+		getState().selectedEventId = eventId;
 		drawChronoGrapher();
 	}
 

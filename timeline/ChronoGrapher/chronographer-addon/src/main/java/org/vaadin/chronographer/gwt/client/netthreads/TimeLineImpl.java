@@ -94,4 +94,9 @@ class TimeLineImpl {
 		timeLine.setEndTime(endTime);
 	}-*/;
     
+    public native static void setSelectedEvent(TimeLine timeLine, String eventId)
+    /*-{
+		timeLine.setSelectedEvent(eventId);
+	}-*/;
+    
 }

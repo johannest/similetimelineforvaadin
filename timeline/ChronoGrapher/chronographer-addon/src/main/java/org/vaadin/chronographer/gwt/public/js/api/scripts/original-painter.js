@@ -658,6 +658,26 @@ Timeline.OriginalEventPainter.prototype._highlightSelectedEvent = function(iconI
     return div;
 };
 
+Timeline.OriginalEventPainter.prototype._highlightAndCenterSelectedEvent = function(iconId, evt) {
+	// clear previous highlights
+	var $icon = $("#"+iconId);
+	$icon.parent().parent().parent().find('div.timeline-band-highlights').find('div.timeline-event-highlight').remove();
+	// center selected event
+	var painter = this;
+	var band = this._timeline.getBand(0);
+	band.scrollToCenter(evt.getStart(), function() {
+		painter._highlightSelectedEvent(iconId, evt);
+	});
+};
+
+Timeline.OriginalEventPainter.prototype.setSelectedEvent = function(eventId) {
+	var evt = this._timeline.getBand(0).getEventSource().getEvent(eventId);
+	if( evt != null ) {
+		var iconId = this._encodeEventElID('icon', evt);
+		this._highlightAndCenterSelectedEvent(iconId, evt);
+	}
+};
+
 Timeline.OriginalEventPainter.prototype._onMouseOverInstantEvent = function(icon, domEvt, evt) {
 	// Show event details in popup on mouse over only if event icon is shown on timeline
 	// this is allowed alows only if serverCallOnEventClickEnabled is enabled
@@ -679,15 +699,7 @@ Timeline.OriginalEventPainter.prototype._onMouseOverInstantEvent = function(icon
 };
 
 Timeline.OriginalEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {
-	// clear previous highlights
-	var $icon = $(icon);
-	$icon.parent().parent().parent().find('div.timeline-band-highlights').find('div.timeline-event-highlight').remove();
-	// center selected event
-	var painter = this;
-	var band = this._timeline.getBand(0);
-	band.scrollToCenter(evt.getStart(), function() {
-		painter._highlightSelectedEvent(icon.id, evt);
-	});
+	this._highlightAndCenterSelectedEvent(icon.id, evt);
 	// server call
 	var myFunc = window[this._timeline._containerDiv.id];
 	myFunc.onEventClick(evt.getID(), evt.getText());

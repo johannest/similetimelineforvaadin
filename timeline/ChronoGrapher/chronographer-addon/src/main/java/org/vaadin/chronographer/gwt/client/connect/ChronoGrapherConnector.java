@@ -48,6 +48,9 @@ public class ChronoGrapherConnector extends AbstractComponentConnector {
 			if (stateChangeEvent.hasPropertyChanged("timelineEnd")) {
 				getWidget().setEndTime(getState().timelineEnd);
 			}
+			if (stateChangeEvent.hasPropertyChanged("selectedEventId")) {
+				getWidget().setSelectedEvent(getState().selectedEventId);
+			}
 		}
 
 		if (!getState().initialized) {

@@ -21,6 +21,8 @@ public class ChronoGrapherState extends AbstractComponentState {
 
 	public Date timelineStart;
 	public Date timelineEnd;
+	
+	public String selectedEventId;
 
 	public String eventsJson;
 
