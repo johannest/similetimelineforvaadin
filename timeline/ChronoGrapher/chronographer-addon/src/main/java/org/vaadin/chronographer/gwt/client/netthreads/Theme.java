@@ -16,7 +16,10 @@
 
 package org.vaadin.chronographer.gwt.client.netthreads;
 
+import java.util.Date;
+
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.i18n.client.DateTimeFormat;
 
 /**
  * this,currently only creates the classic theme.
@@ -24,6 +27,7 @@ import com.google.gwt.core.client.JavaScriptObject;
  * @author ajr
  */
 public class Theme extends JavaScriptObject {
+
 	protected Theme() {
 		super();
 	}
@@ -95,8 +99,9 @@ public class Theme extends JavaScriptObject {
 	public final void setEventHighlightColors(String[] highlightColors) {
 		ThemeImpl.setEventHighlightColors(this, highlightColors);
 	}
-	
+
 	public final void setFirstDayOfWeek(int firstDayOfWeek) {
 		ThemeImpl.setFirstDayOfWeek(this, firstDayOfWeek);
 	}
+
 }

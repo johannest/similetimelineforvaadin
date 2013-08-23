@@ -9,153 +9,155 @@ import org.vaadin.chronographer.gwt.client.model.theme.TimelineTheme;
 
 public class TimelineBandInfo implements Serializable {
 
-    private Integer trackGap;
-    private Integer trackHeight;
-    private Integer intervalPixels;
-    private Integer timeZone;
-    private Integer syncWith;
-    private String width;
-    private Boolean showEventText;
-    private Boolean overview;
-    private Boolean highligh;
-    private Date date;
+	private static final long serialVersionUID = 1L;
 
-    private TimeUnit intervalUnit;
-    private TimelineTheme theme;
+	private Integer trackGap;
+	private Integer trackHeight;
+	private Integer intervalPixels;
+	private Integer timeZone;
+	private Integer syncWith;
+	private String width;
+	private Boolean showEventText;
+	private Boolean overview;
+	private Boolean highligh;
+	private Date date;
 
-    private List<TimelineZone> timelineZones = new ArrayList<TimelineZone>();
-    private List<HighlighDecorator> decorators = new ArrayList<HighlighDecorator>();
+	private TimeUnit intervalUnit;
+	private TimelineTheme theme;
 
-    public TimelineBandInfo() {
+	private List<TimelineZone> timelineZones = new ArrayList<TimelineZone>();
+	private List<HighlighDecorator> decorators = new ArrayList<HighlighDecorator>();
 
-    }
+	public TimelineBandInfo() {
 
-    public String getWidth() {
-        return width;
-    }
+	}
 
-    public void setWidth(String width) {
-        this.width = width;
-    }
+	public String getWidth() {
+		return width;
+	}
 
-    public TimeUnit getIntervalUnit() {
-        return intervalUnit;
-    }
+	public void setWidth(String width) {
+		this.width = width;
+	}
 
-    public void setIntervalUnit(TimeUnit intervalUnit) {
-        this.intervalUnit = intervalUnit;
-    }
+	public TimeUnit getIntervalUnit() {
+		return intervalUnit;
+	}
 
-    public Integer getIntervalPixels() {
-        return intervalPixels;
-    }
+	public void setIntervalUnit(TimeUnit intervalUnit) {
+		this.intervalUnit = intervalUnit;
+	}
 
-    public void setIntervalPixels(Integer intervalPixels) {
-        this.intervalPixels = intervalPixels;
-    }
+	public Integer getIntervalPixels() {
+		return intervalPixels;
+	}
 
-    public Integer getTimeZone() {
-        return timeZone;
-    }
+	public void setIntervalPixels(Integer intervalPixels) {
+		this.intervalPixels = intervalPixels;
+	}
 
-    public void setTimeZone(Integer timeZone) {
-        this.timeZone = timeZone;
-    }
+	public Integer getTimeZone() {
+		return timeZone;
+	}
 
-    public Integer getSyncWith() {
-        return syncWith;
-    }
+	public void setTimeZone(Integer timeZone) {
+		this.timeZone = timeZone;
+	}
 
-    public void setSyncWith(Integer syncWith) {
-        this.syncWith = syncWith;
-    }
+	public Integer getSyncWith() {
+		return syncWith;
+	}
 
-    public Boolean getOverview() {
-        return overview;
-    }
+	public void setSyncWith(Integer syncWith) {
+		this.syncWith = syncWith;
+	}
 
-    public void setOverview(Boolean overview) {
-        this.overview = overview;
-    }
+	public Boolean getOverview() {
+		return overview;
+	}
 
-    public Boolean getHighligh() {
-        return highligh;
-    }
+	public void setOverview(Boolean overview) {
+		this.overview = overview;
+	}
 
-    public void setHighligh(Boolean highligh) {
-        this.highligh = highligh;
-    }
+	public Boolean getHighligh() {
+		return highligh;
+	}
 
-    public Date getDate() {
-        return date;
-    }
+	public void setHighligh(Boolean highligh) {
+		this.highligh = highligh;
+	}
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
+	public Date getDate() {
+		return date;
+	}
 
-    public List<TimelineZone> getTimelineZones() {
-        return timelineZones;
-    }
+	public void setDate(Date date) {
+		this.date = date;
+	}
 
-    public void setTimelineZones(List<TimelineZone> timelineZones) {
-        this.timelineZones = timelineZones;
-    }
+	public List<TimelineZone> getTimelineZones() {
+		return timelineZones;
+	}
 
-    public void addTimelineZone(TimelineZone zone) {
-        timelineZones.add(zone);
-    }
+	public void setTimelineZones(List<TimelineZone> timelineZones) {
+		this.timelineZones = timelineZones;
+	}
 
-    public void clearTimelineZones() {
-        timelineZones.clear();
-    }
+	public void addTimelineZone(TimelineZone zone) {
+		timelineZones.add(zone);
+	}
 
-    public void setTheme(TimelineTheme theme) {
-        this.theme = theme;
-    }
+	public void clearTimelineZones() {
+		timelineZones.clear();
+	}
 
-    public TimelineTheme getTheme() {
-        return theme;
-    }
+	public void setTheme(TimelineTheme theme) {
+		this.theme = theme;
+	}
 
-    public void setShowEventText(Boolean showEventText) {
-        this.showEventText = showEventText;
-    }
+	public TimelineTheme getTheme() {
+		return theme;
+	}
 
-    public Boolean getShowEventText() {
-        return showEventText;
-    }
+	public void setShowEventText(Boolean showEventText) {
+		this.showEventText = showEventText;
+	}
 
-    public void setTrackGap(Integer trackGap) {
-        this.trackGap = trackGap;
-    }
+	public Boolean getShowEventText() {
+		return showEventText;
+	}
 
-    public Integer getTrackGap() {
-        return trackGap;
-    }
+	public void setTrackGap(Integer trackGap) {
+		this.trackGap = trackGap;
+	}
 
-    public void setTrackHeight(Integer trackHeight) {
-        this.trackHeight = trackHeight;
-    }
+	public Integer getTrackGap() {
+		return trackGap;
+	}
 
-    public Integer getTrackHeight() {
-        return trackHeight;
-    }
+	public void setTrackHeight(Integer trackHeight) {
+		this.trackHeight = trackHeight;
+	}
 
-    public List<HighlighDecorator> getHighlightDecorators() {
-        return decorators;
-    }
+	public Integer getTrackHeight() {
+		return trackHeight;
+	}
 
-    public void setHighlightDecorators(List<HighlighDecorator> decorators) {
-        this.decorators = decorators;
-    }
+	public List<HighlighDecorator> getHighlightDecorators() {
+		return decorators;
+	}
 
-    public void addHighlightDecorator(HighlighDecorator decorator) {
-        decorators.add(decorator);
-    }
+	public void setHighlightDecorators(List<HighlighDecorator> decorators) {
+		this.decorators = decorators;
+	}
 
-    public void clearHighlightDecorators() {
-        decorators.clear();
-    }
+	public void addHighlightDecorator(HighlighDecorator decorator) {
+		decorators.add(decorator);
+	}
+
+	public void clearHighlightDecorators() {
+		decorators.clear();
+	}
 
 }

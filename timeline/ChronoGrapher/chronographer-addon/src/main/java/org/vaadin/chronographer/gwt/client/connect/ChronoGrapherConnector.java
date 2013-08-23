@@ -13,49 +13,56 @@ import com.vaadin.shared.ui.Connect;
 @Connect(org.vaadin.chronographer.ChronoGrapher.class)
 public class ChronoGrapherConnector extends AbstractComponentConnector {
 
-    private static final long serialVersionUID = -3030798781172318095L;
+	private static final long serialVersionUID = -3030798781172318095L;
 
-    ChronoGrapherServerRpc rpc = RpcProxy.create(ChronoGrapherServerRpc.class,
-            this);
+	ChronoGrapherServerRpc rpc = RpcProxy.create(ChronoGrapherServerRpc.class, this);
 
-    public ChronoGrapherConnector() {
-        getWidget().setRpc(rpc);
-    }
+	public ChronoGrapherConnector() {
+		getWidget().setRpc(rpc);
+	}
 
-    @Override
-    public ChronoGrapherWidget getWidget() {
-        return (ChronoGrapherWidget) super.getWidget();
-    }
+	@Override
+	public ChronoGrapherWidget getWidget() {
+		return (ChronoGrapherWidget) super.getWidget();
+	}
 
-    @Override
-    public ChronoGrapherState getState() {
-        return (ChronoGrapherState) super.getState();
-    }
+	@Override
+	public ChronoGrapherState getState() {
+		return (ChronoGrapherState) super.getState();
+	}
 
-    @Override
-    public void onStateChanged(StateChangeEvent stateChangeEvent) {
-        super.onStateChanged(stateChangeEvent);
+	@Override
+	public void onStateChanged(StateChangeEvent stateChangeEvent) {
+		super.onStateChanged(stateChangeEvent);
 
-        if (getState().initialized) {
-            if (stateChangeEvent.hasPropertyChanged("eventsJson")) {
-                getWidget().setEventsJson(getState().eventsJson);
-            }
-            if (stateChangeEvent.hasPropertyChanged("timelineThemes")) {
-                getWidget().setThemes(getState().timelineThemes);
-            }
-        }
+		if (getState().initialized) {
+			if (stateChangeEvent.hasPropertyChanged("eventsJson")) {
+				getWidget().setEventsJson(getState().eventsJson);
+			}
+			if (stateChangeEvent.hasPropertyChanged("timelineThemes")) {
+				getWidget().setThemes(getState().timelineThemes);
+			}
+			if (stateChangeEvent.hasPropertyChanged("timelineStart")) {
+				getWidget().setStartTime(getState().timelineStart);
+			}
+			if (stateChangeEvent.hasPropertyChanged("timelineEnd")) {
+				getWidget().setEndTime(getState().timelineEnd);
+			}
+			if (stateChangeEvent.hasPropertyChanged("selectedEventId")) {
+				getWidget().setSelectedEvent(getState().selectedEventId);
+			}
+		}
 
-        if (!getState().initialized) {
-            Scheduler.get().scheduleFixedDelay(new RepeatingCommand() {
-                @Override
-                public boolean execute() {
-                    getWidget().init(getState().width, getState().height,
-                            getState().horizontal, getState().bandInfos,
-                            getState().timelineThemes, getState().eventsJson);
-                    getState().initialized = true;
-                    return false;
-                }
-            }, 1500);
-        }
-    }
+		if (!getState().initialized) {
+			Scheduler.get().scheduleFixedDelay(new RepeatingCommand() {
+				@Override
+				public boolean execute() {
+					getWidget().init(getState().width, getState().height, getState().horizontal, getState().serverCallOnEventClickEnabled,
+							getState().timelineStart, getState().timelineEnd, getState().bandInfos, getState().timelineThemes, getState().eventsJson);
+					getState().initialized = true;
+					return false;
+				}
+			}, 1500);
+		}
+	}
 }

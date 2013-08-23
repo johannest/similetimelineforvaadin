@@ -20,6 +20,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.UIObject;
 
+import java.util.Date;
 import java.util.List;
 
 import org.vaadin.chronographer.gwt.client.TimeLineClickHandler;
@@ -40,7 +41,7 @@ public class TimeLine extends JavaScriptObject
     /**
      * Create TimeLine object
      */
-    public static TimeLine create(List bands, EventSource source, Element divElement, Element clientElement, boolean horizontalOrientation)
+    public static TimeLine create(List bands, EventSource source, Element divElement, Element clientElement, boolean horizontalOrientation, boolean serverCallOnEventClickEnabled, Date startTime, Date endTime)
     {
     	JavaScriptObject[] bandArr = JavaScriptObjectHelper.listToArray(bands);
 
@@ -48,8 +49,9 @@ public class TimeLine extends JavaScriptObject
 
         boolean currVisible = UIObject.isVisible(clientElement);
         UIObject.setVisible(clientElement, true);
-        
-        TimeLine timeLine = TimeLineImpl.create(jarr, divElement, horizontalOrientation ? 0 : 1);
+		double startTimeL = startTime == null ? 0 : startTime.getTime();
+		double endTimeL = endTime == null ? 0 : endTime.getTime();
+		TimeLine timeLine = TimeLineImpl.create(jarr, divElement, horizontalOrientation ? 0 : 1, serverCallOnEventClickEnabled, startTimeL, endTimeL);
 
         UIObject.setVisible(clientElement, currVisible);
         
@@ -106,5 +108,32 @@ public class TimeLine extends JavaScriptObject
      */
     public final void centerOnEvent(){
     	
+    }
+    
+    /**
+     * Sets start of timeline range
+     * 
+     * @param startTime
+     */
+    public final void setStartTime(Date startTime){
+    	TimeLineImpl.setStartTime(this, startTime.getTime());
+    }
+    
+    /**
+     * Sets end of timeline range
+     * 
+     * @param endTime
+     */
+    public final void setEndTime(Date endTime){
+    	TimeLineImpl.setEndTime(this, endTime.getTime());
+    }
+    
+    /**
+     * Select event with given id on timeline. Event will be highlighted and centered. 
+     * 
+     * @param eventId
+     */
+    public final void setSelectedEvent(String eventId){
+    	TimeLineImpl.setSelectedEvent(this, eventId);
     }
 }

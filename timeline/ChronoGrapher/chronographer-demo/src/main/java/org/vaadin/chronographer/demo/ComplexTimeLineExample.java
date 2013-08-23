@@ -4,7 +4,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -12,7 +11,6 @@ import java.util.TimeZone;
 import nu.xom.Builder;
 import nu.xom.Document;
 import nu.xom.Element;
-import nu.xom.ParsingException;
 
 import org.vaadin.chronographer.ChronoGrapher;
 import org.vaadin.chronographer.gwt.client.model.HighlighDecorator;
@@ -28,10 +26,13 @@ import org.vaadin.chronographer.gwt.client.model.theme.event.Label;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 
 public class ComplexTimeLineExample extends VerticalLayout {
-    private ChronoGrapher timeline;
+	private static final long serialVersionUID = 1L;
+
+	private ChronoGrapher timeline;
 
     private final DateFormat df2 = new SimpleDateFormat(
             "EEE MMM dd yyyy HH:mm:ss", Locale.US);
@@ -51,6 +52,15 @@ public class ComplexTimeLineExample extends VerticalLayout {
         super.attach();
         if (timeline == null) {
             timeline = new ChronoGrapher();
+            // we need to set true in ChronoGrapher constructor to enable this feature
+			// timeline.setEventClickHandler(new
+			// ChronoGrapher.EventClickHandler() {
+			// @Override
+			// public void handleClick(String eventId, String eventTitle) {
+			// Notification.show(String.format("Event with id #%s and title '%s' is clicked !",
+			// eventId, eventTitle));
+			// }
+			// });
 
             df2.setTimeZone(TimeZone.getTimeZone("GMT-0600"));
             df3.setTimeZone(TimeZone.getTimeZone("GMT-0600"));
@@ -68,6 +78,9 @@ public class ComplexTimeLineExample extends VerticalLayout {
             infoLabel.setId("timeline-ex-2-infolabel");
             addComponent(infoLabel);
 
+            HorizontalLayout buttons = new HorizontalLayout();
+            addComponent(buttons);
+            
             Button loadButton = new Button("Load Events",
                     new Button.ClickListener() {
                         @Override
@@ -80,7 +93,20 @@ public class ComplexTimeLineExample extends VerticalLayout {
                         }
                     });
             loadButton.setId("timeline-ex-2-loadButton");
-            addComponent(loadButton);
+            buttons.addComponent(loadButton);
+            
+            Button switchThemeButton = new Button("Switch theme",
+                    new Button.ClickListener() {
+                        @Override
+                        public void buttonClick(ClickEvent event) {
+                        	if(timeline.getStyleName().contains("dark-theme")){
+                        		timeline.setStyleName("");
+                        	}else{
+                        		timeline.setStyleName("dark-theme");
+                        	}
+                        }
+                    });
+            buttons.addComponent(switchThemeButton);
 
             addComponent(timeline);
             timeline.setId("timeline-widget");

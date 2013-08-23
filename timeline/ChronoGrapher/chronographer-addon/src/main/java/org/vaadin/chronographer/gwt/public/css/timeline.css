@@ -6,3 +6,6 @@
     border: 1px solid #aaa;
 }
 
+.timeline-event-highlight {
+	background-color: red;	
+}

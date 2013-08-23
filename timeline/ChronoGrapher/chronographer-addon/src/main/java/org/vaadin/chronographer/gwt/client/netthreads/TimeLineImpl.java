@@ -16,6 +16,8 @@
 
 package org.vaadin.chronographer.gwt.client.netthreads;
 
+import java.util.Date;
+
 import org.vaadin.chronographer.gwt.client.TimeLineClickHandler;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -35,8 +37,8 @@ class TimeLineImpl {
     private static TimeLineClickHandler listener;
 
     public native static TimeLine create(JavaScriptObject bands,
-            Element divElement, int orientation) /*-{
-                                                 return $wnd.Timeline.create(divElement, bands, orientation);
+            Element divElement, int orientation, boolean serverCallOnEventClickEnabled, double startTime, double endTime) /*-{
+                                                 return $wnd.Timeline.create(divElement, bands, orientation, null, serverCallOnEventClickEnabled, startTime, endTime)
                                                  }-*/;
 
     public native static void loadXML(String dataUrl, TimelineXMLHandler handler) /*-{
@@ -81,4 +83,20 @@ class TimeLineImpl {
                                                 return;
                                                 }finally {}
                                                 }-*/;
+    
+    public native static void setStartTime(TimeLine timeLine, double startTime)
+    /*-{
+		timeLine.setStartTime(startTime);
+	}-*/;
+    
+    public native static void setEndTime(TimeLine timeLine, double endTime)
+    /*-{
+		timeLine.setEndTime(endTime);
+	}-*/;
+    
+    public native static void setSelectedEvent(TimeLine timeLine, String eventId)
+    /*-{
+		timeLine.setSelectedEvent(eventId);
+	}-*/;
+    
 }

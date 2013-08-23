@@ -109,4 +109,6 @@ class ThemeImpl {
     public native static void setFirstDayOfWeek(Theme theme, int firstDayOfWeek) /*-{
                                                                                  theme.firstDayOfWeek = firstDayOfWeek;
                                                                                  }-*/;
+
 }
+

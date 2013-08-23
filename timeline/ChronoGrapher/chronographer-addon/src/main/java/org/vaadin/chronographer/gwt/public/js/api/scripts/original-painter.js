@@ -268,11 +268,23 @@ Timeline.OriginalEventPainter.prototype.paintPreciseInstantEvent = function(evt,
     var els = [iconElmtData.elmt, labelElmtData.elmt];
 
     var self = this;
-    var clickHandler = function(elmt, domEvt, target) {
-        return self._onClickInstantEvent(iconElmtData.elmt, domEvt, evt);
-    };
-    SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandler);
-    SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mousedown", clickHandler);
+    var mouseOverHandler = function(elmt, domEvt, target) {
+		return self._onMouseOverInstantEvent(iconElmtData.elmt, domEvt, evt);
+	};
+    if( this._timeline._serverCallOnEventClickEnabled ) {
+    	var clickHandler = function(elmt, domEvt, target) {
+            return self._onClickInstantEvent(iconElmtData.elmt, domEvt, evt);
+        };
+        
+    	SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandler);
+    	SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mousedown", clickHandler);
+    
+    	SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mouseover", mouseOverHandler);
+    	// SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mouseover", mouseOverHandler);
+    } else {
+    	SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", mouseOverHandler);
+    	SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mousedown", mouseOverHandler);
+    }
     
     var hDiv = this._createHighlightDiv(highlightIndex, iconElmtData, theme, evt);
     if (hDiv != null) {els.push(hDiv);}
@@ -318,12 +330,25 @@ Timeline.OriginalEventPainter.prototype.paintImpreciseInstantEvent = function(ev
     var els = [iconElmtData.elmt, labelElmtData.elmt, tapeElmtData.elmt];    
     
     var self = this;
-    var clickHandler = function(elmt, domEvt, target) {
-        return self._onClickInstantEvent(iconElmtData.elmt, domEvt, evt);
+    var mouseOverHandler = function(elmt, domEvt, target) {
+        return self._onMouseOverInstantEvent(iconElmtData.elmt, domEvt, evt);
     };
-    SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandler);
-    SimileAjax.DOM.registerEvent(tapeElmtData.elmt, "mousedown", clickHandler);
-    SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mousedown", clickHandler);
+    if( this._timeline._serverCallOnEventClickEnabled ) {
+    	var clickHandler = function(elmt, domEvt, target) {
+            return self._onClickInstantEvent(iconElmtData.elmt, domEvt, evt);
+        };
+        SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", clickHandler);
+        SimileAjax.DOM.registerEvent(tapeElmtData.elmt, "mousedown", clickHandler);
+        SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mousedown", clickHandler);
+        
+        SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mouseover", mouseOverHandler);
+        SimileAjax.DOM.registerEvent(tapeElmtData.elmt, "mouseover", mouseOverHandler);
+        //SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mouseover", mouseOverHandler);
+    } else {
+    	SimileAjax.DOM.registerEvent(iconElmtData.elmt, "mousedown", mouseOverHandler);
+        SimileAjax.DOM.registerEvent(tapeElmtData.elmt, "mousedown", mouseOverHandler);
+        SimileAjax.DOM.registerEvent(labelElmtData.elmt, "mousedown", mouseOverHandler);
+    }
     
     var hDiv = this._createHighlightDiv(highlightIndex, iconElmtData, theme, evt);
     if (hDiv != null) {els.push(hDiv);}
@@ -612,16 +637,73 @@ Timeline.OriginalEventPainter.prototype._createHighlightDiv = function(highlight
     return div;
 };
 
-Timeline.OriginalEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {
-    var c = SimileAjax.DOM.getPageCoordinates(icon);
-    this._showBubble(
-        c.left + Math.ceil(icon.offsetWidth / 2), 
-        c.top + Math.ceil(icon.offsetHeight / 2),
-        evt
-    );
-    this._fireOnSelect(evt.getID());
+Timeline.OriginalEventPainter.prototype._highlightSelectedEvent = function(iconId, evt) {
+    var doc = this._timeline.getDocument();        
+    var color = evt.getHighlightColor();
     
-    domEvt.cancelBubble = true;
+    var div = doc.createElement("div");
+    div.className = this._getElClassName('timeline-event-highlight', evt, 'highlight');
+    div.id = this._encodeEventElID('highlight0', evt); // in future will have other
+                                                       // highlight divs for tapes + icons
+    var $icon = $(doc.getElementById(iconId));
+    div.style.position = "absolute";
+    div.style.overflow = "hidden";
+    div.style.left =    ($icon.position().left - 2) + "px";
+    div.style.width =   ($icon.width() + 4) + "px";
+    div.style.top =     ($icon.position().top - 2) + "px";
+    div.style.height =  ($icon.height() + 4) + "px";
+    div.style.background = color;
+    
+    this._highlightLayer.appendChild(div);
+    return div;
+};
+
+Timeline.OriginalEventPainter.prototype._highlightAndCenterSelectedEvent = function(iconId, evt) {
+	// clear previous highlights
+	var $icon = $("#"+iconId);
+	$icon.parent().parent().parent().find('div.timeline-band-highlights').find('div.timeline-event-highlight').remove();
+	// center selected event
+	var painter = this;
+	var band = this._timeline.getBand(0);
+	band.scrollToCenter(evt.getStart(), function() {
+		painter._highlightSelectedEvent(iconId, evt);
+	});
+};
+
+Timeline.OriginalEventPainter.prototype.setSelectedEvent = function(eventId) {
+	var evt = this._timeline.getBand(0).getEventSource().getEvent(eventId);
+	if( evt != null ) {
+		var iconId = this._encodeEventElID('icon', evt);
+		this._highlightAndCenterSelectedEvent(iconId, evt);
+	}
+};
+
+Timeline.OriginalEventPainter.prototype._onMouseOverInstantEvent = function(icon, domEvt, evt) {
+	// Show event details in popup on mouse over only if event icon is shown on timeline
+	// this is allowed alows only if serverCallOnEventClickEnabled is enabled
+	var band = this._timeline.getBand(0);
+	if( this._timeline._serverCallOnEventClickEnabled == null || this._timeline._serverCallOnEventClickEnabled == false || 
+			(this._timeline._serverCallOnEventClickEnabled && band.getMinVisibleDate() < evt.getStart() && evt.getStart() < band.getMaxVisibleDate()) ) {
+	    var c = SimileAjax.DOM.getPageCoordinates(icon);
+	    this._showBubble(
+	        c.left + Math.ceil(icon.offsetWidth / 2), 
+	        c.top + Math.ceil(icon.offsetHeight / 2),
+	        evt
+	    );
+	    this._fireOnSelect(evt.getID());
+	    domEvt.cancelBubble = true;
+	}
+    
+    SimileAjax.DOM.cancelEvent(domEvt);
+    return false;
+};
+
+Timeline.OriginalEventPainter.prototype._onClickInstantEvent = function(icon, domEvt, evt) {
+	this._highlightAndCenterSelectedEvent(icon.id, evt);
+	// server call
+	var myFunc = window[this._timeline._containerDiv.id];
+	myFunc.onEventClick(evt.getID(), evt.getText());
+
     SimileAjax.DOM.cancelEvent(domEvt);
     return false;
 };
@@ -653,8 +735,27 @@ Timeline.OriginalEventPainter.prototype.showBubble = function(evt) {
 
 Timeline.OriginalEventPainter.prototype._showBubble = function(x, y, evt) {
     var div = document.createElement("div");
+    if( evt._obj.detailsStyleName != null ) {
+    	var classNames;
+    	if( div.className != null ) {
+    		classNames = div.className + ' ' + evt._obj.detailsStyleName;
+    	} else {
+    		classNames = evt._obj.detailsStyleName;
+    	}
+    	div.className = classNames;
+    }
     var themeBubble = this._params.theme.event.bubble;
-    evt.fillInfoBubble(div, this._params.theme, this._band.getLabeller());
+    evt.fillInfoBubble(div, this._params.theme, this._band.getLabeller(), this._timeline._serverCallOnEventClickEnabled);
+
+    if( this._timeline._serverCallOnEventClickEnabled ) {
+	    var $bubleTitle =  $(div).find('.timeline-event-bubble-title');
+	    
+	    var self = this;
+		var clickHandler = function(elmt, domEvt, target) {
+	        return self._onClickInstantEvent($bubleTitle[0], domEvt, evt);
+	    };
+		SimileAjax.DOM.registerEvent($bubleTitle[0], "mousedown", clickHandler);
+    }
     
     SimileAjax.WindowManager.cancelPopups();
     SimileAjax.Graphics.createBubbleForContentAndPoint(div, x, y,

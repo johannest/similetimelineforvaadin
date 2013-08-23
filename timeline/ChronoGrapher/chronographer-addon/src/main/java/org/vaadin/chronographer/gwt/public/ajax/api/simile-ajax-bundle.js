@@ -1,4 +1,4 @@
-﻿
+﻿﻿
 
 /* jquery-1.2.6.min.js */
 (function(){var _jQuery=window.jQuery,_$=window.$;
@@ -1603,10 +1603,10 @@ SimileAjax.DOM.getStyle=function(B,A){if(B.currentStyle){var C=B.currentStyle[A]
 }else{var C="";
 }}return C;
 };
-SimileAjax.DOM.getEventRelativeCoordinates=function(A,B){if(SimileAjax.Platform.browser.isIE){if(A.type=="mousewheel"){var C=SimileAjax.DOM.getPageCoordinates(B);
-return{x:A.clientX-C.left,y:A.clientY-C.top};
-}else{return{x:A.offsetX,y:A.offsetY};
-}}else{var C=SimileAjax.DOM.getPageCoordinates(B);
+SimileAjax.DOM.getEventRelativeCoordinates=function(A,B){if(SimileAjax.Platform.browser.isIE){//if(A.type=="mousewheel"){
+var C=SimileAjax.DOM.getPageCoordinates(B);return{x:A.clientX-C.left,y:A.clientY-C.top};
+//}else{return{x:A.offsetX,y:A.offsetY};}
+}else{var C=SimileAjax.DOM.getPageCoordinates(B);
 if((A.type=="DOMMouseScroll")&&SimileAjax.Platform.browser.isFirefox&&(SimileAjax.Platform.browser.majorVersion==2)){return{x:A.screenX-C.left,y:A.screenY-C.top};
 }else{return{x:A.pageX-C.left,y:A.pageY-C.top};
 }}};

@@ -16,6 +16,7 @@
 package org.vaadin.chronographer.gwt.client.netthreads;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -35,12 +36,15 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class TimeLineWidget extends Widget {
     private EventSource eventSource = null;
-    private ArrayList bandInfos = null;
-    private ArrayList bandHotZones = null;
+    private ArrayList<BandInfo> bandInfos = null;
+    private ArrayList<HotZoneBandOptions> bandHotZones = null;
     private ArrayList bandDecorators = null;
     private TimeLine timeLine = null;
     private Element divElement = null;
     private boolean horizontalOrientation = true;
+    private boolean serverCallOnEventClickEnabled = false;
+    private Date startTime = null;
+    private Date endTime = null;
 
     /**
      * Create timeline elements and assign renderer. The renderer must implement
@@ -55,8 +59,8 @@ public class TimeLineWidget extends Widget {
         // ---------------------------------------------------------------
         // Bands
         // ---------------------------------------------------------------
-        bandInfos = new ArrayList();
-        bandHotZones = new ArrayList();
+        bandInfos = new ArrayList<BandInfo>();
+        bandHotZones = new ArrayList<HotZoneBandOptions>();
         bandDecorators = new ArrayList();
 
         // ---------------------------------------------------------------
@@ -109,7 +113,7 @@ public class TimeLineWidget extends Widget {
      */
     public void create() {
         timeLine = TimeLine.create(bandInfos, eventSource, divElement,
-                getClientElement(), horizontalOrientation);
+                getClientElement(), horizontalOrientation, serverCallOnEventClickEnabled, startTime, endTime);
     }
 
     /**
@@ -232,11 +236,11 @@ public class TimeLineWidget extends Widget {
         return bandDecorators;
     }
 
-    public ArrayList getBandHotZones() {
+    public ArrayList<HotZoneBandOptions> getBandHotZones() {
         return bandHotZones;
     }
 
-    public ArrayList getBandInfos() {
+    public ArrayList<BandInfo> getBandInfos() {
         return bandInfos;
     }
 
@@ -304,8 +308,45 @@ public class TimeLineWidget extends Widget {
     public boolean isHorizontalOrientation() {
         return horizontalOrientation;
     }
+    
+	public void setServerCallOnEventClickEnabled(
+			boolean serverCallOnEventClickEnabled) {
+		this.serverCallOnEventClickEnabled = serverCallOnEventClickEnabled;
+	}
+	
+	public boolean isServerCallOnEventClickEnabled() {
+		return serverCallOnEventClickEnabled;
+	}
 
-    public void setEventSource(EventSource eventSource) {
+	public void setEventSource(EventSource eventSource) {
         this.eventSource = eventSource;
     }
+
+	public Date getStartTime() {
+		return startTime;
+	}
+	
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+		if (timeLine != null) {
+			timeLine.setStartTime(startTime);
+		}
+	}
+	
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+		if (timeLine != null) {
+			timeLine.setEndTime(endTime);
+		}
+	}
+	
+	public void setSelectedEvent(String eventId) {
+		if (timeLine != null) {
+			timeLine.setSelectedEvent(eventId);
+		}
+	}
 }
