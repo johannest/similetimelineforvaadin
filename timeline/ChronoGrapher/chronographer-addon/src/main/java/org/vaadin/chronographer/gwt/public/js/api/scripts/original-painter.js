@@ -659,15 +659,21 @@ Timeline.OriginalEventPainter.prototype._highlightSelectedEvent = function(iconI
 };
 
 Timeline.OriginalEventPainter.prototype._onMouseOverInstantEvent = function(icon, domEvt, evt) {
-    var c = SimileAjax.DOM.getPageCoordinates(icon);
-    this._showBubble(
-        c.left + Math.ceil(icon.offsetWidth / 2), 
-        c.top + Math.ceil(icon.offsetHeight / 2),
-        evt
-    );
-    this._fireOnSelect(evt.getID());
+	// Show event details in popup on mouse over only if event icon is shown on timeline
+	// this is allowed alows only if serverCallOnEventClickEnabled is enabled
+	var band = this._timeline.getBand(0);
+	if( this._timeline._serverCallOnEventClickEnabled == null || this._timeline._serverCallOnEventClickEnabled == false || 
+			(this._timeline._serverCallOnEventClickEnabled && band.getMinVisibleDate() < evt.getStart() && evt.getStart() < band.getMaxVisibleDate()) ) {
+	    var c = SimileAjax.DOM.getPageCoordinates(icon);
+	    this._showBubble(
+	        c.left + Math.ceil(icon.offsetWidth / 2), 
+	        c.top + Math.ceil(icon.offsetHeight / 2),
+	        evt
+	    );
+	    this._fireOnSelect(evt.getID());
+	    domEvt.cancelBubble = true;
+	}
     
-    domEvt.cancelBubble = true;
     SimileAjax.DOM.cancelEvent(domEvt);
     return false;
 };
